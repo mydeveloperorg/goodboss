@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/basic_core/basic_core.iml" filepath="$PROJECT_DIR$/basic_core/basic_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basic_util/basic_util.iml" filepath="$PROJECT_DIR$/basic_util/basic_util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goodboss.iml" filepath="$PROJECT_DIR$/goodboss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goodboss_common/goodboss_common.iml" filepath="$PROJECT_DIR$/goodboss_common/goodboss_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goodboss_mapper/goodboss_mapper.iml" filepath="$PROJECT_DIR$/goodboss_mapper/goodboss_mapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goodboss_service/goodboss_service.iml" filepath="$PROJECT_DIR$/goodboss_service/goodboss_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goodboss_web/goodboss_web.iml" filepath="$PROJECT_DIR$/goodboss_web/goodboss_web.iml" />
+    </modules>
+  </component>
+</project>
