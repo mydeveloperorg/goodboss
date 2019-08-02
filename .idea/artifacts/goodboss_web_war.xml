@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="goodboss_web:war">
-    <output-path>$PROJECT_DIR$/goodboss_web/target</output-path>
-    <root id="archive" name="goodboss_web.war">
-      <element id="artifact" artifact-name="goodboss_web:war exploded" />
-    </root>
-  </artifact>
-</component>
