@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodboss.mapper.DeptMapper">
+    <resultMap id="deptMap" type="Dept">
+        <id property="id" column="d_id"/>
+        <result property="name" column="d_name"/>
+        <collection property="employees" ofType="Employee">
+            <id property="id" column="e_id"/>
+            <result property="name" column="e_name"/>
+            <result property="password" column="e_password"/>
+            <result property="age" column="e_age"/>
+            <association property="dept" javaType="Dept"
+                         column="dept_id" select="com.goodboss.mapper.DeptMapper.findById"/>
+        </collection>
+    </resultMap>
+    <sql id="whereSql">
+        <where>
+            <where>
+                <if test="name!=null and name!=''">
+                    AND name LIKE concat("%",#{name},"%")
+                </if>
+            </where>
+        </where>
+    </sql>
+    <sql id="limtsql">
+        <if test="currentPage!=null and pageSize!=null">
+            LIMIT #{startPage},#{pageSize}
+        </if>
+    </sql>
+    <!--T findById(Serializable id);-->
+    <select id="findById" parameterType="long" resultMap="deptMap">
+        SELECT d.id d_id,d.name d_name,e.id e_id,e.name e_name,e.password e_password,
+        e.age e_age FROM t_dept d LEFT JOIN t_employee e ON e.dept_id=d.id
+        WHERE d.id=#{id}
+    </select>
+    <!--List<T> findAll();-->
+    <select id="findAll" resultMap="deptMap">
+        SELECT d.id d_id,d.name d_name,e.id e_id,e.name e_name,e.password e_password,
+        e.age e_age FROM t_dept d LEFT JOIN t_employee e ON e.dept_id=d.id
+    </select>
+    <!--List<T> findByQuery(BaseQuery baseQuery);-->
+    <select id="findByQuery" parameterType="DeptQuery" resultMap="deptMap">
+        SELECT d.id d_id,d.name d_name,e.id e_id,e.name e_name,e.password e_password,
+        e.age e_age FROM t_dept d LEFT JOIN t_employee e ON e.dept_id=d.id
+        <include refid="whereSql"/>
+    </select>
+    <!--Long findCount();-->
+    <select id="findCount" parameterType="EmployeeQuery" resultType="long">
+        SELECT count(*) FROM t_dept
+        <include refid="whereSql"></include>
+    </select>
+    <!--Long save(T t);-->
+    <insert id="save" parameterType="Dept"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_dept(name) VALUE (#{name})
+    </insert>
+    <!--void update(T t);-->
+    <update id="update" parameterType="Dept">
+        UPDATE t_dept
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <!--void delete(Serializable id);-->
+    <delete id="delete" parameterType="long">
+        DELETE FROM t_dept WHERE id=#{id}
+    </delete>
+
+</mapper>

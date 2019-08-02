@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodboss.mapper.EmployeeMapper">
+    <sql id="whereSql">
+        <where>
+            <if test="name!=null and name!=''">
+                AND name LIKE concat("%",#{name},"%")
+            </if>
+        </where>
+    </sql>
+    <sql id="limtsql">
+        <if test="currentPage!=null and pageSize!=null">
+            LIMIT #{startPage},#{pageSize}
+        </if>
+    </sql>
+    <!--配置多对一-->
+    <resultMap id="employeeMap" type="Employee">
+        <id property="id" column="e_id"/>
+        <result property="name" column="e_name"/>
+        <result property="password" column="e_password"/>
+        <result property="age" column="e_age"/>
+        <association property="dept" javaType="Dept"
+                     column="dept_id" select="com.goodboss.mapper.DeptMapper.findById"
+        />
+    </resultMap>
+    <!--$查询$相关SQL-->
+    <!--List<Employee> findByQuery(EmployeeQuery employeeQuery);-->
+    <select id="findById" parameterType="long" resultMap="employeeMap">
+        select e.id e_id,e.name e_name,e.password e_password,e.age e_age ,e.dept_id dept_id from t_employee e
+        WHERE id=#{id}
+    </select>
+    <select id="findByQuery" parameterType="EmployeeQuery" resultMap="employeeMap">
+        select e.id e_id,e.name e_name,e.password e_password,e.age e_age ,e.dept_id dept_id from t_employee e
+        <include refid="whereSql"></include>
+        <include refid="limtsql"></include>
+    </select>
+    <select id="findAll" resultMap="employeeMap">
+        select e.id e_id,e.name e_name,e.password e_password,e.age e_age ,e.dept_id dept_id from t_employee e
+    </select>
+
+    <!--Long findCount();-->
+    <select id="findCount" parameterType="EmployeeQuery" resultType="long">
+        SELECT count(*) FROM t_employee
+        <include refid="whereSql"></include>
+    </select>
+    <!--void update(Employee employee);-->
+    <update id="update" parameterType="Employee">
+        UPDATE t_employee
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="age!=null">
+                age=#{age},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="dept!=null">
+                dept_id=#{dept.id},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <!--void delete(Long id);-->
+    <delete id="delete" parameterType="long">
+        DELETE FROM t_employee WHERE id=#{id}
+    </delete>
+    <!--void save(Employee employee);-->
+    <insert id="save" parameterType="Employee"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_employee(name,password,age,dept_id) VALUE (#{name},#{password},#{age},#{dept.id})
+    </insert>
+</mapper>
